@@ -1,13 +1,21 @@
 import { Injectable } from '@nestjs/common';
+
 import { PrismaService } from '../prisma/prisma.service';
+
 import { Rol } from '@prisma/client';
+
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(nombre: string, email: string, password: string, rol: Rol) {
+  async create(
+    nombre: string,
+    email: string,
+    password: string,
+    rol: Rol,
+  ) {
     const hash = await bcrypt.hash(password, 10);
 
     return this.prisma.usuario.create({
@@ -32,6 +40,38 @@ export class UsersService {
         rut: data.rut,
         fechaNacimiento: data.fechaNacimiento,
         usuarioId: data.usuarioId,
+      },
+    });
+  }
+
+  async createProfesional(data: {
+    nombre: string;
+    rut: string;
+    especialidad: string;
+    usuarioId: number;
+  }) {
+    return this.prisma.profesional.create({
+      data: {
+        nombre: data.nombre,
+        rut: data.rut,
+        especialidad: data.especialidad,
+        usuarioId: data.usuarioId,
+      },
+    });
+  }
+
+  async getPacientes() {
+    return this.prisma.paciente.findMany({
+      orderBy: {
+        nombre: 'asc',
+      },
+    });
+  }
+
+  async getProfesionales() {
+    return this.prisma.profesional.findMany({
+      orderBy: {
+        nombre: 'asc',
       },
     });
   }

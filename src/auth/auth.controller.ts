@@ -1,11 +1,23 @@
-import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
+
 import { AuthService } from './auth.service';
+
 import { Rol } from '@prisma/client';
+
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+  ) {}
 
   @Post('register')
   register(
@@ -17,6 +29,7 @@ export class AuthController {
       rol?: Rol;
       rut?: string;
       fechaNacimiento?: string;
+      especialidad?: string;
     },
   ) {
     return this.authService.register(
@@ -26,17 +39,29 @@ export class AuthController {
       body.rol,
       body.rut,
       body.fechaNacimiento,
+      body.especialidad,
     );
   }
 
   @Post('login')
-  login(@Body() body: { email: string; password: string }) {
-    return this.authService.login(body.email, body.password);
+  login(
+    @Body()
+    body: {
+      email: string;
+      password: string;
+    },
+  ) {
+    return this.authService.login(
+      body.email,
+      body.password,
+    );
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('me')
   me(@Req() req: any) {
-    return this.authService.me(req.user.sub);
+    return this.authService.me(
+      req.user.sub,
+    );
   }
 }
