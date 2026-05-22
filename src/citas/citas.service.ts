@@ -96,6 +96,36 @@ export class CitasService {
     });
   }
 
+  async resolverProfesionalId(
+    user: { sub: number; rol: Rol },
+    profesionalIdBody?: number,
+  ) {
+    if (user.rol === Rol.ADMIN) {
+      if (!profesionalIdBody) {
+        throw new ForbiddenException(
+          'Debe enviar profesionalId',
+        );
+      }
+
+      return profesionalIdBody;
+    }
+
+    const profesional =
+      await this.prisma.profesional.findUnique({
+        where: {
+          usuarioId: user.sub,
+        },
+      });
+
+    if (!profesional) {
+      throw new ForbiddenException(
+        'No tiene perfil profesional',
+      );
+    }
+
+    return profesional.id;
+  }
+
   async getDiasBloqueados(
     profesionalId: number,
   ) {
