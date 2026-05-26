@@ -29,20 +29,24 @@ export class UsersService {
   }
 
   async createPaciente(data: {
-    nombre: string;
-    rut: string;
-    fechaNacimiento: Date;
-    usuarioId: number;
-  }) {
-    return this.prisma.paciente.create({
-      data: {
-        nombre: data.nombre,
-        rut: data.rut,
-        fechaNacimiento: data.fechaNacimiento,
-        usuarioId: data.usuarioId,
-      },
-    });
-  }
+  nombre: string;
+  rut: string;
+  fechaNacimiento: Date;
+  usuarioId: number;
+  telefono?: string;
+  email?: string;
+}) {
+  return this.prisma.paciente.create({
+    data: {
+      nombre: data.nombre,
+      rut: data.rut,
+      fechaNacimiento: data.fechaNacimiento,
+      usuarioId: data.usuarioId,
+      telefono: data.telefono,
+      email: data.email,
+    },
+  });
+}
 
   async createProfesional(data: {
     nombre: string;

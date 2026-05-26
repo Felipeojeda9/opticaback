@@ -13,6 +13,7 @@ export class AuthController {
     return this.authService.register(
       body.nombre, body.email, body.password,
       body.rol, body.rut, body.fechaNacimiento, body.especialidad,
+      body.telefono,
     );
   }
 

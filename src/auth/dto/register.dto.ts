@@ -28,4 +28,8 @@ export class RegisterDto {
   @IsOptional()
   @IsString()
   especialidad?: string;
+
+  @IsOptional()
+  @IsString()
+  telefono?: string;
 }

@@ -27,6 +27,7 @@ export class AuthService {
     rut?: string,
     fechaNacimiento?: string,
     especialidad?: string,
+    telefono?: string,
   ) {
     const existe =
       await this.usersService.findByEmail(email);
@@ -59,6 +60,8 @@ export class AuthService {
           fechaNacimiento,
         ),
         usuarioId: usuario.id,
+        telefono,
+        email,
       });
     }
 
